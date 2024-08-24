@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "652135777717",
+    "project_id": "teniski-klub-d5797",
+    "storage_bucket": "teniski-klub-d5797.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:652135777717:android:b6abdab28273d146d5c5fc",
+        "android_client_info": {
+          "package_name": "com.example.teniski_klub_projekat"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCrS_XP98mXpqPmcc5JayE1evL1F18T7S4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
