@@ -20,6 +20,8 @@ class _KreirajTerminState extends State<KreirajTermin> {
   List<Teren> _courts = [];
   final TereniService _tereniService = TereniService();
   final TerminService _terminService = TerminService();
+  bool _isProcessing = false;
+  double _progress = 0.0;
 
   @override
   void initState() {
@@ -113,6 +115,72 @@ class _KreirajTerminState extends State<KreirajTermin> {
       print('Molimo popunite sve podatke.');
     }
   }
+
+  Future<void> _kreirajSveTermineZaDvaMeseca() async {
+    if (_selectedDate == null || _selectedCourt == null) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Molimo izaberite datum i teren.'),
+        backgroundColor: Colors.red,
+      ),
+    );
+    return;
+  }
+
+  setState(() {
+      _isProcessing = true;
+      _progress = 0.0;
+    });
+
+
+  DateTime pocetniDatum = _selectedDate!;
+  DateTime krajnjiDatum = pocetniDatum.add(Duration(days: 7)); // Period od nedelju dana
+
+  List<int> satnice = List<int>.generate(17, (index) => 6 + index); // Satnice od 6 do 22
+  int totalTerminCount = 7 * satnice.length; // Ukupan broj termina
+  int currentTerminCount = 0;
+
+  for (DateTime datum = pocetniDatum;
+      datum.isBefore(krajnjiDatum);
+      datum = datum.add(Duration(days: 1))) {
+    String formattedDate = DateFormat('dd.MM.yyyy').format(datum);
+
+    for (int satnica in satnice) {
+      TimeOfDay vreme = TimeOfDay(hour: satnica, minute: 0);
+      String formattedTime = vreme.format(context);
+
+      Termin termin = Termin(
+        datum: formattedDate,
+        satnica: formattedTime,
+        teren: _selectedCourt!,
+        isSlobodan: true,
+      );
+
+      bool terminPostoji = await _terminService.postojiTermin(termin);
+      if (!terminPostoji) {
+        await _terminService.kreirajTermin(termin);
+      }
+
+      currentTerminCount++;
+        setState(() {
+          _progress = currentTerminCount / totalTerminCount;
+        });
+
+    }
+  }
+
+  setState(() {
+      _isProcessing = false;
+    });
+
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text('Svi termini za narednih nedelju dana su uspešno kreirani!'),
+      backgroundColor: Colors.green,
+    ),
+  );
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -251,6 +319,22 @@ class _KreirajTerminState extends State<KreirajTermin> {
                   ),
                 ),
                 SizedBox(height: 20),
+                if (_isProcessing)
+                Column(
+                  children: [
+                  LinearProgressIndicator(
+                    value: _progress,
+                    backgroundColor: Colors.grey[200],
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.orange),
+                  ),
+                  SizedBox(height: 16),
+                  Text(
+                    'Kreiranje termina... ${(_progress * 100).toStringAsFixed(1)}%',
+                    style: TextStyle(color: Colors.orange),
+                  ),
+                ],
+              ),
+              SizedBox(height: 20),
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
@@ -265,12 +349,12 @@ class _KreirajTerminState extends State<KreirajTermin> {
                           MaterialStateProperty.all(TextStyle(fontSize: 16)),
                     ),
                     onPressed: () {
-                      // Akcija za kreiranje svih termina za narednih mesec dana
+                      _isProcessing ? null :_kreirajSveTermineZaDvaMeseca();
                     },
                     child: Align(
                         alignment: Alignment.center,
                         child: Text(
-                          'Kreiraj sve termine za naredna 2 meseca',
+                          'Kreiraj sve termine za narednih nedelju dana',
                           textAlign: TextAlign.center,
                         )),
                   ),

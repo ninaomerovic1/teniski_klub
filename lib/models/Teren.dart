@@ -14,6 +14,7 @@ class Teren {
   Map<String, dynamic> toJson() {
     return {
       'naziv': naziv,
+      
     };
   }
 }

@@ -1,26 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:teniski_klub_projekat/models/Rezervacija.dart';
-import 'package:teniski_klub_projekat/models/Termin.dart';
-import 'package:teniski_klub_projekat/services/termin_service.dart';
-import 'package:teniski_klub_projekat/services/tereni_service.dart';
 import 'package:intl/intl.dart';
-import '../widgets/date_picker.dart'; // Uvezi vaš DatePicker widget
+import 'package:teniski_klub_projekat/widgets/prikaz_rezervacije.dart';
+import '../services/tereni_service.dart';
+import '../services/rezervacija_service.dart';
+import '../models/Rezervacija.dart';
 import '../models/Teren.dart';
-import '../widgets/prikaz_termina.dart';
+import '../widgets/date_picker.dart'; // Uvezi vaš DatePicker widget
 
-class PregledTermina extends StatefulWidget {
+class FiltriranjeRezervacija extends StatefulWidget {
+  const FiltriranjeRezervacija({super.key});
+
   @override
-  _PregledTerminaState createState() => _PregledTerminaState();
+  State<FiltriranjeRezervacija> createState() => _FiltriranjeRezervacijaState();
 }
 
-class _PregledTerminaState extends State<PregledTermina> {
+class _FiltriranjeRezervacijaState extends State<FiltriranjeRezervacija> {
   final TereniService _tereniService = TereniService();
-  final TerminService _terminService = TerminService();
+  final RezervacijaService _rezervacijaService = RezervacijaService();
 
   List<Teren> _tereni = [];
+  List<String> _datumi = [];
   DateTime? _selectedDate;
   String? _selectedCourt;
-  List<Termin> _filteredTermini = [];
+  List<Rezervacija> _filteredRezervacije = [];
   bool _isLoading = true;
   List<Teren> _courts = [];
 
@@ -31,13 +33,18 @@ class _PregledTerminaState extends State<PregledTermina> {
   }
 
   Future<void> _loadTereni() async {
+    print("USAO U LOAD TERENI");
     try {
+      print("U LOAD TERENI SAM");
       final courts = await _tereniService.getTereni();
+      print("UCITALI SE");
+      print('Tereni učitani: $courts');
       setState(() {
-        _courts = courts;
-        _selectedCourt = _courts.isNotEmpty ? _courts[0].id : "";
+        _courts = courts; // Direktno dodeljujemo listu terena
+        _selectedCourt = _courts.isNotEmpty ? _courts[0].id : null;
       });
     } catch (error) {
+      print("U OVOM CATCHU SAM");
       print('Došlo je do greške: $error');
     }
   }
@@ -45,6 +52,7 @@ class _PregledTerminaState extends State<PregledTermina> {
   void _onDateSelected(DateTime? date) {
     setState(() {
       _selectedDate = date;
+      // Ovde možeš dodati kod za ažuriranje dostupnih satnica prema izabranom datumu
     });
   }
 
@@ -52,42 +60,32 @@ class _PregledTerminaState extends State<PregledTermina> {
     await selectDate(context, _onDateSelected);
   }
 
-  Future<void> _filterTermini() async {
+  Future<void> _filterReservations() async {
     if (_selectedCourt != null && _selectedDate != null) {
       try {
         final date = DateFormat('dd.MM.yyyy').format(_selectedDate!);
-        final result = await _terminService.fetchTermini(date, _selectedCourt!);
-        final termini = (result['termini'] as List<dynamic>).map((item) {
-          // Pretvoriti svaki item u Map<String, dynamic>
-          return item as Map<String, dynamic>;
-        }).toList();
+        final rezervacije = await _rezervacijaService.rezervacijeFiltriranje(
+            _selectedCourt, date);
 
-        print("UCITAO SAM TERMINE");
         setState(() {
-          _filteredTermini = termini.map((item) {
-            final id = item['id'] as String; // ID iz rezultata
-            final terminData = item; // Map<String, dynamic>
-
-            return Termin.fromJson(terminData, id);
-          }).toList();
-
-          _filteredTermini.sort((a, b) {
-            // Sortiranje prema satnici, format je HH:00
-            return a.satnica.compareTo(b.satnica);
-          });
+          _filteredRezervacije = rezervacije;
         });
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Greška pri filtriranju termina: $e')),
+          SnackBar(content: Text('Greška pri filtriranju rezervacija: $e')),
         );
       }
+    }
+    for (int i = 0; i < _filteredRezervacije.length; i++) {
+      print(_filteredRezervacije[i].satnica);
     }
   }
 
   Future<void> _refreshData() async {
-    print("USAO SAM U REFERSH");
-    await _filterTermini();
-    setState(() {});
+    await _filterReservations();
+    setState(() {
+      print("USAO U SET STATE");
+    });
   }
 
   @override
@@ -95,11 +93,11 @@ class _PregledTerminaState extends State<PregledTermina> {
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Colors.white, // Bela pozadina
           image: DecorationImage(
-            image: AssetImage('assets/reketi.png'),
+            image: AssetImage('assets/reketi.png'), // Slika reketa
             scale: 8.0,
-            repeat: ImageRepeat.repeat,
+            repeat: ImageRepeat.repeat, // Ponavlja sliku da pokrije pozadinu
             fit: BoxFit.none,
           ),
         ),
@@ -110,6 +108,7 @@ class _PregledTerminaState extends State<PregledTermina> {
               alignment: Alignment.topCenter,
               child: Container(
                 width: 400.0, // Smanjena širina
+                //height: 300,
                 padding: EdgeInsets.all(16.0),
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -120,14 +119,14 @@ class _PregledTerminaState extends State<PregledTermina> {
                       color: Colors.grey.withOpacity(0.5),
                       spreadRadius: 5,
                       blurRadius: 7,
-                      offset: Offset(0, 3),
+                      offset: Offset(0, 3), // Promena pozicije senke
                     ),
                   ],
                 ),
                 child: Column(
                   children: [
                     Text(
-                      'Pregled termina',
+                      'Filtriraj rezervacije',
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -147,7 +146,8 @@ class _PregledTerminaState extends State<PregledTermina> {
                           _courts.map<DropdownMenuItem<String>>((Teren teren) {
                         return DropdownMenuItem<String>(
                           value: teren.id,
-                          child: Text(teren.naziv),
+                          child: Text(
+                              teren.naziv), // Pretpostavljam da Teren ima naziv
                         );
                       }).toList(),
                       decoration: InputDecoration(
@@ -206,7 +206,7 @@ class _PregledTerminaState extends State<PregledTermina> {
                         textStyle:
                             MaterialStateProperty.all(TextStyle(fontSize: 16)),
                       ),
-                      onPressed: _filterTermini,
+                      onPressed: _filterReservations,
                       child: Text('Filtriraj', textAlign: TextAlign.center),
                     ),
                     SizedBox(height: 8),
@@ -215,35 +215,43 @@ class _PregledTerminaState extends State<PregledTermina> {
               ),
             ),
             Expanded(
-              child: _filteredTermini.isEmpty
+              child: _filteredRezervacije.isEmpty
                   ? Center(
                       child: Container(
                         padding: EdgeInsets.all(16.0),
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(12.0),
-                          border: Border.all(color: Colors.grey, width: 1.0),
+                          border: Border.all(color: Colors.grey, width: 1),
                         ),
                         child: Text(
-                          'Nema termina',
-                          style: TextStyle(fontSize: 18.0, color: Colors.black),
+                          'Nema rezervacija',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.black,
+                          ),
                         ),
                       ),
                     )
                   : ListView.builder(
                       padding: EdgeInsets.all(16.0),
-                      itemCount: _filteredTermini.length,
+                      itemCount: _filteredRezervacije.length,
                       itemBuilder: (context, index) {
-                        final termin = _filteredTermini[index];
+                        final rezervacija = _filteredRezervacije[index];
                         return Padding(
                           padding: const EdgeInsets.only(bottom: 16.0),
-                          child: PrikazTermina(
-                            id: termin.id,
-                            datum: termin.datum,
-                            vreme: termin.satnica,
-                            teren: termin.teren,
-                            jeSlobodan: termin.isSlobodan,
-                            onOtkazi: _refreshData,
+                          child: PrikazRezervacije(
+                            datum: rezervacija.datum,
+                            vreme: rezervacija.satnica,
+                            teren: rezervacija.teren,
+                            index: index,
+                            onReservationCancelled: (int cancelledIndex) async {
+                              setState(() {
+                                print("OVDE SAM");
+                                _filteredRezervacije = [];
+                                _filterReservations();
+                              });
+                            },
                           ),
                         );
                       },

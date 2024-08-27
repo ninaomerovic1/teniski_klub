@@ -94,9 +94,12 @@ class _LoginPageState extends State<LoginPage>
       final parts = credentials.split('|');
       final idToken = parts[0];
       final userId = parts[1];
+      final userEmail = parts[2];
 
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('authToken', idToken);
+      await prefs.setString('userId', userId);
+      await prefs.setString('email', userEmail);
       print("token u sign in");
       print(idToken);
       final korisnik = await _authService.fetchUserData(userId, idToken);

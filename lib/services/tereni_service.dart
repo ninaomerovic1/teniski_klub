@@ -21,9 +21,6 @@ class TereniService {
 
     final response = await http.get(
       Uri.parse("$baseUrl.json?auth=$authToken"),
-      headers: {
-        'Authorization': 'Bearer $authToken',
-      },
     );
 
     if (response.statusCode == 200) {
@@ -33,7 +30,8 @@ class TereniService {
       print(data);
       return data.entries.map((entry) {
         print("OVAJ FORMAT VRACAM");
-        print(Teren.fromJson(entry.value, entry.key));
+        Teren t = Teren.fromJson(entry.value, entry.key);
+        print(t.id);
         return Teren.fromJson(entry.value, entry.key);
       }).toList();
     } else if (response.statusCode == 401) {
@@ -44,6 +42,33 @@ class TereniService {
       // U slučaju drugih grešaka, vrati praznu listu
       print("Error: ${response.statusCode}");
       return [];
+    }
+  }
+
+  Future<Teren?> getTerenById(String id) async {
+    final prefs = await SharedPreferences.getInstance();
+    final authToken = prefs.getString('authToken');
+
+    if (authToken == null) {
+      throw Exception(
+          'Autentifikacija nije uspešna. Molimo prijavite se ponovo.');
+    }
+
+    final response =
+        await http.get(Uri.parse('$baseUrl/$id.json?auth=$authToken'));
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body) as Map<String, dynamic>;
+
+      if (data.isNotEmpty) {
+        // Kreiraj instancu Teren iz JSON podataka
+        return Teren.fromJson(data, id);
+      } else {
+        // Ako nema podataka, vrati null
+        return null;
+      }
+    } else {
+      throw Exception(
+          'Greška prilikom dobijanja terena. Status kod: ${response.statusCode}');
     }
   }
 }

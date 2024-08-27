@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:teniski_klub_projekat/pages/kreiranje_termina.dart';
 import 'package:teniski_klub_projekat/pages/pocetna.dart';
-import 'package:teniski_klub_projekat/pages/pregled_termina.dart';
+import 'package:teniski_klub_projekat/pages/pregled_rezervacija.dart';
 import 'package:teniski_klub_projekat/pages/rezervisi_termin.dart';
-import 'package:teniski_klub_projekat/widgets/prikaz_rezervacije.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../pages/pregled_rezervacija_admin.dart';
+import '../../pages/pregled_termina.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -36,12 +37,11 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     return isAdmin;
   }
 
-
-   Future<void> _logout() async {
+  Future<void> _logout() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.clear(); // Očisti sve podatke iz SharedPreferences
 
-     ScaffoldMessenger.of(context).showSnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('Uspešno ste se odjavili.'),
         duration: Duration(seconds: 2),
@@ -51,8 +51,6 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     // Vrati korisnika na stranicu za prijavu
     Navigator.pushNamed(context, '/signin');
   }
-
-
 
   @override
   void dispose() {
@@ -83,21 +81,23 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                   child: TabBar(
                     controller: _tabController,
                     indicatorColor: Color.fromARGB(255, 4, 113, 7),
-                    labelColor: Color.fromARGB(255, 4, 113, 7), // Boja teksta za odabrane tabove
+                    labelColor: Color.fromARGB(
+                        255, 4, 113, 7), // Boja teksta za odabrane tabove
                     unselectedLabelColor: Colors.black,
-                    isScrollable: true, // Omogućava skrolovanje tabova ako ne staju u jedan red
+                    isScrollable:
+                        true, // Omogućava skrolovanje tabova ako ne staju u jedan red
                     tabs: isAdmin
                         ? [
                             Tab(text: 'Početna'),
-                            Tab(text: 'Rezerviši termin'),
-                            Tab(text: 'Pregled termina'),
                             Tab(text: 'Kreiraj termin'),
+                            Tab(text: 'Pregled termina'),
+                            Tab(text: 'Rezervisi termin'),
                             Tab(text: 'Pregled rezervacija'),
                           ]
                         : [
                             Tab(text: 'Početna'),
                             Tab(text: 'Rezerviši termin'),
-                            Tab(text: 'Pregled termina'),
+                            Tab(text: 'Pregled rezervacija'),
                           ],
                   ),
                 );
@@ -108,10 +108,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
         actions: [
           IconButton(
             icon: Icon(Icons.logout),
-            onPressed: _logout, 
-              // Implement logout functionality here
-              
-            
+            onPressed: _logout,
+            // Implement logout functionality here
           ),
         ],
       ),
@@ -130,19 +128,15 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
               children: isAdmin
                   ? [
                       Pocetna(),
-                      Rezervisi(),
-                      Center(
-                          child: Text('Pregled Termina',
-                              style: TextStyle(fontSize: 24))),
                       KreirajTermin(),
-                      Center(
-                          child: Text('Pregled Rezervacija',
-                              style: TextStyle(fontSize: 24))),
+                      PregledTermina(),
+                      Rezervisi(),
+                      FiltriranjeRezervacija(),
                     ]
                   : [
                       Pocetna(),
                       Rezervisi(),
-                      PregledTermina(),
+                      PregledRezervacija(),
                     ],
             );
           }

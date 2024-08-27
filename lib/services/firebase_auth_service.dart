@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:teniski_klub_projekat/models/Korisnik.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class FirebaseAuthService {
   final String _apiKey = 'AIzaSyCrS_XP98mXpqPmcc5JayE1evL1F18T7S4';
@@ -29,10 +30,11 @@ class FirebaseAuthService {
       print(response.body);
       final token = data['idToken'];
       final userId = data['localId'];
+      final email = data['email'];
       print("Token");
       print(token);
       print(userId);
-      return '$token|$userId';
+      return '$token|$userId|$email';
     } else {
       // Obrađuj greške
       return null;
@@ -105,6 +107,11 @@ class FirebaseAuthService {
     if (response.statusCode != 200) {
       throw Exception('Failed to save user to database');
     }
+  }
+
+  Future<String?> getUserId() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('userId'); // 'userId' je ključ pod kojim se čuva ID korisnika
   }
 
 
