@@ -1,3 +1,4 @@
+// ignore_for_file: prefer_const_constructors, library_private_types_in_public_api, use_build_context_synchronously
 import 'package:flutter/material.dart';
 import 'package:teniski_klub_projekat/pages/kreiranje_termina.dart';
 import 'package:teniski_klub_projekat/pages/pocetna.dart';

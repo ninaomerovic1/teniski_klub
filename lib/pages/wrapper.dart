@@ -1,7 +1,6 @@
+// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers
 import 'package:flutter/material.dart';
-import 'package:teniski_klub_projekat/pages/auth/auth.dart';
 import 'package:teniski_klub_projekat/pages/auth/sign_in.dart';
-import 'package:teniski_klub_projekat/pages/home/home.dart';
 
 class Wrapper extends StatelessWidget {
   const Wrapper({super.key});

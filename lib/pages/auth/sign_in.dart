@@ -1,5 +1,5 @@
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 import 'package:flutter/material.dart';
-import 'package:teniski_klub_projekat/pages/auth/auth.dart';
 import '../../services/firebase_auth_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -7,6 +7,7 @@ class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _LoginPageState createState() => _LoginPageState();
 }
 

@@ -1,5 +1,5 @@
+// ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, library_private_types_in_public_api, use_build_context_synchronously
 import 'package:flutter/material.dart';
-import 'package:teniski_klub_projekat/models/Rezervacija.dart';
 import 'package:teniski_klub_projekat/models/Termin.dart';
 import 'package:teniski_klub_projekat/services/termin_service.dart';
 import 'package:teniski_klub_projekat/services/tereni_service.dart';
@@ -16,12 +16,9 @@ class PregledTermina extends StatefulWidget {
 class _PregledTerminaState extends State<PregledTermina> {
   final TereniService _tereniService = TereniService();
   final TerminService _terminService = TerminService();
-
-  List<Teren> _tereni = [];
   DateTime? _selectedDate;
   String? _selectedCourt;
   List<Termin> _filteredTermini = [];
-  bool _isLoading = true;
   List<Teren> _courts = [];
 
   @override
@@ -198,13 +195,13 @@ class _PregledTerminaState extends State<PregledTermina> {
                     ElevatedButton(
                       style: ButtonStyle(
                         backgroundColor:
-                            MaterialStateProperty.all(Colors.orange),
+                            WidgetStateProperty.all(Colors.orange),
                         foregroundColor:
-                            MaterialStateProperty.all(Colors.white),
-                        minimumSize: MaterialStateProperty.all(
+                            WidgetStateProperty.all(Colors.white),
+                        minimumSize: WidgetStateProperty.all(
                             Size(double.infinity, 48)),
                         textStyle:
-                            MaterialStateProperty.all(TextStyle(fontSize: 16)),
+                            WidgetStateProperty.all(TextStyle(fontSize: 16)),
                       ),
                       onPressed: _filterTermini,
                       child: Text('Filtriraj', textAlign: TextAlign.center),

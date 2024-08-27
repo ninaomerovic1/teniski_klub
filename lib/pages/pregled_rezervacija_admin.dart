@@ -1,3 +1,4 @@
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:teniski_klub_projekat/widgets/prikaz_rezervacije.dart';
@@ -17,13 +18,9 @@ class FiltriranjeRezervacija extends StatefulWidget {
 class _FiltriranjeRezervacijaState extends State<FiltriranjeRezervacija> {
   final TereniService _tereniService = TereniService();
   final RezervacijaService _rezervacijaService = RezervacijaService();
-
-  List<Teren> _tereni = [];
-  List<String> _datumi = [];
   DateTime? _selectedDate;
   String? _selectedCourt;
   List<Rezervacija> _filteredRezervacije = [];
-  bool _isLoading = true;
   List<Teren> _courts = [];
 
   @override
@@ -79,13 +76,6 @@ class _FiltriranjeRezervacijaState extends State<FiltriranjeRezervacija> {
     for (int i = 0; i < _filteredRezervacije.length; i++) {
       print(_filteredRezervacije[i].satnica);
     }
-  }
-
-  Future<void> _refreshData() async {
-    await _filterReservations();
-    setState(() {
-      print("USAO U SET STATE");
-    });
   }
 
   @override
@@ -198,13 +188,13 @@ class _FiltriranjeRezervacijaState extends State<FiltriranjeRezervacija> {
                     ElevatedButton(
                       style: ButtonStyle(
                         backgroundColor:
-                            MaterialStateProperty.all(Colors.orange),
+                            WidgetStateProperty.all(Colors.orange),
                         foregroundColor:
-                            MaterialStateProperty.all(Colors.white),
-                        minimumSize: MaterialStateProperty.all(
+                            WidgetStateProperty.all(Colors.white),
+                        minimumSize: WidgetStateProperty.all(
                             Size(double.infinity, 48)),
                         textStyle:
-                            MaterialStateProperty.all(TextStyle(fontSize: 16)),
+                            WidgetStateProperty.all(TextStyle(fontSize: 16)),
                       ),
                       onPressed: _filterReservations,
                       child: Text('Filtriraj', textAlign: TextAlign.center),
@@ -244,6 +234,7 @@ class _FiltriranjeRezervacijaState extends State<FiltriranjeRezervacija> {
                             datum: rezervacija.datum,
                             vreme: rezervacija.satnica,
                             teren: rezervacija.teren,
+                            korisnik: rezervacija.korisnik,
                             index: index,
                             onReservationCancelled: (int cancelledIndex) async {
                               setState(() {

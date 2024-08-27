@@ -1,13 +1,13 @@
+// ignore_for_file: use_build_context_synchronously, prefer_const_constructors_in_immutables
+// ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
-import 'package:teniski_klub_projekat/pages/auth/sign_in.dart';
-
 import '../../services/firebase_auth_service.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Authenticate extends StatefulWidget {
-  const Authenticate({super.key});
+  Authenticate({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _AuthenticateState createState() => _AuthenticateState();
 }
 
@@ -39,14 +39,15 @@ class _AuthenticateState extends State<Authenticate> {
 
     if (!_isValidEmail(email)) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Unesite ispravan email')),
+        const SnackBar(content: Text('Unesite ispravan email')),
       );
       return;
     }
 
     if (!_isValidPassword(password)) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Lozinka mora imati najmanje 6 karaktera')),
+        const SnackBar(
+            content: Text('Lozinka mora imati najmanje 6 karaktera')),
       );
       return;
     }
@@ -61,12 +62,12 @@ class _AuthenticateState extends State<Authenticate> {
       await _authService.saveUserToDatabase(userId, idToken, email);
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Registracija uspešna!')),
+        const SnackBar(content: Text('Registracija uspešna!')),
       );
       Navigator.pushReplacementNamed(context, '/signin');
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Greška pri registraciji')),
+        const SnackBar(content: Text('Greška pri registraciji')),
       );
     }
   }
@@ -74,7 +75,7 @@ class _AuthenticateState extends State<Authenticate> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 4, 113, 7),
+      backgroundColor: const Color.fromARGB(255, 4, 113, 7),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -82,7 +83,7 @@ class _AuthenticateState extends State<Authenticate> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(
+              const Text(
                 'Registracija',
                 style: TextStyle(
                   fontSize: 32,
@@ -90,7 +91,7 @@ class _AuthenticateState extends State<Authenticate> {
                   color: Colors.white,
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextField(
                 controller: _emailController,
                 cursorColor: Colors.orange,
@@ -100,19 +101,22 @@ class _AuthenticateState extends State<Authenticate> {
                   hintText: 'Email',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(color: Colors.orange, width: 2),
+                    borderSide:
+                        const BorderSide(color: Colors.orange, width: 2),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(color: Colors.orange, width: 2),
+                    borderSide:
+                        const BorderSide(color: Colors.orange, width: 2),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(color: Colors.orange, width: 2),
+                    borderSide:
+                        const BorderSide(color: Colors.orange, width: 2),
                   ),
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextField(
                 controller: _passwordController,
                 obscureText: true,
@@ -123,38 +127,42 @@ class _AuthenticateState extends State<Authenticate> {
                   hintText: 'Lozinka',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(color: Colors.orange, width: 2),
+                    borderSide:
+                        const BorderSide(color: Colors.orange, width: 2),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(color: Colors.orange, width: 2),
+                    borderSide:
+                        const BorderSide(color: Colors.orange, width: 2),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(color: Colors.orange, width: 2),
+                    borderSide:
+                        const BorderSide(color: Colors.orange, width: 2),
                   ),
                 ),
               ),
-              SizedBox(height: 32),
+              const SizedBox(height: 32),
               ElevatedButton(
                 onPressed: _register,
                 style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.symmetric(vertical: 16, horizontal: 32),
-                  backgroundColor: Color.fromARGB(255, 255, 152, 0),
-                  foregroundColor: Color.fromARGB(255, 255, 255, 255),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
+                  backgroundColor: const Color.fromARGB(255, 255, 152, 0),
+                  foregroundColor: const Color.fromARGB(255, 255, 255, 255),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(32),
                   ),
                 ),
-                child:
-                    Text('Registruj se', style: TextStyle(color: Colors.white)),
+                child: const Text('Registruj se',
+                    style: TextStyle(color: Colors.white)),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextButton(
                 onPressed: () {
                   Navigator.pushNamed(context, '/signin');
                 },
-                child: Text(
+                child: const Text(
                   'Nazad na prijavu',
                   style: TextStyle(color: Colors.orange),
                 ),

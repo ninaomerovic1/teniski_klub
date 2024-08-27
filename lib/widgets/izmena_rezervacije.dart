@@ -1,9 +1,8 @@
+// ignore_for_file: prefer_const_constructors, use_super_parameters, library_private_types_in_public_api, use_build_context_synchronously, prefer_for_elements_to_map_fromiterable
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart'; // Potrebno za formatiranje datuma
 import 'package:teniski_klub_projekat/services/tereni_service.dart';
 import '../services/termin_service.dart'; // Importuj TerminiService
 import '../services/rezervacija_service.dart'; // Importuj RezervacijaService
-import '../models/Rezervacija.dart'; // Importuj model rezervacije
 import '../models/Teren.dart';
 
 const Color availableColor =
@@ -158,11 +157,11 @@ class _IzmeniRezervacijuState extends State<IzmeniRezervaciju> {
             SizedBox(height: 20),
             ElevatedButton(
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.orange),
-                foregroundColor: MaterialStateProperty.all(Colors.white),
+                backgroundColor: WidgetStateProperty.all(Colors.orange),
+                foregroundColor: WidgetStateProperty.all(Colors.white),
                 minimumSize:
-                    MaterialStateProperty.all(Size(double.infinity, 48)),
-                textStyle: MaterialStateProperty.all(TextStyle(fontSize: 16)),
+                    WidgetStateProperty.all(Size(double.infinity, 48)),
+                textStyle: WidgetStateProperty.all(TextStyle(fontSize: 16)),
               ),
               onPressed: _checkAvailability,
               child:
@@ -227,11 +226,11 @@ class _IzmeniRezervacijuState extends State<IzmeniRezervaciju> {
               child: ElevatedButton(
                 style: ButtonStyle(
                   backgroundColor:
-                      MaterialStateProperty.all(Color.fromARGB(255, 4, 113, 7)),
-                  foregroundColor: MaterialStateProperty.all(Colors.white),
+                      WidgetStateProperty.all(Color.fromARGB(255, 4, 113, 7)),
+                  foregroundColor: WidgetStateProperty.all(Colors.white),
                   minimumSize:
-                      MaterialStateProperty.all(Size(double.infinity, 48)),
-                  textStyle: MaterialStateProperty.all(TextStyle(fontSize: 16)),
+                      WidgetStateProperty.all(Size(double.infinity, 48)),
+                  textStyle: WidgetStateProperty.all(TextStyle(fontSize: 16)),
                 ),
                 onPressed: _updateReservation,
                 child: Text('Izmeni rezervaciju', textAlign: TextAlign.center),

@@ -1,3 +1,4 @@
+// ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors
 import 'package:flutter/material.dart';
 import 'package:teniski_klub_projekat/services/termin_service.dart';
 
@@ -24,7 +25,7 @@ class PrikazTermina extends StatelessWidget {
     bool uspeh = await terminService
         .obrisiTermin(id); // Pozovi funkciju za brisanje termina
     if (uspeh) {
-      // Ako je uspešno obrisan, obavesti korisnika
+      onOtkazi();
     } else {
       // Ako nije uspešno obrisan, obavesti korisnika
     }
@@ -52,8 +53,8 @@ class PrikazTermina extends StatelessWidget {
                   // Pozovi funkciju za brisanje termina
                 },
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.orange),
-                  foregroundColor: MaterialStateProperty.all(Colors.white),
+                  backgroundColor: WidgetStateProperty.all(Colors.orange),
+                  foregroundColor: WidgetStateProperty.all(Colors.white),
                 ),
                 child: Text(
                   'Ne',
@@ -64,11 +65,10 @@ class PrikazTermina extends StatelessWidget {
                 onPressed: () async {
                   Navigator.of(context).pop();
                   _obrisi();
-                  onOtkazi(); // Zatvori dijalog bez brisanja
                 },
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.orange),
-                  foregroundColor: MaterialStateProperty.all(Colors.white),
+                  backgroundColor: WidgetStateProperty.all(Colors.orange),
+                  foregroundColor: WidgetStateProperty.all(Colors.white),
                 ),
                 child: Text(
                   'Da',
@@ -99,8 +99,8 @@ class PrikazTermina extends StatelessWidget {
                   Navigator.of(context).pop(); // Zatvori dijalog
                 },
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.orange),
-                  foregroundColor: MaterialStateProperty.all(Colors.white),
+                  backgroundColor: WidgetStateProperty.all(Colors.orange),
+                  foregroundColor: WidgetStateProperty.all(Colors.white),
                 ),
                 child: Text(
                   'U redu',
@@ -171,14 +171,15 @@ class PrikazTermina extends StatelessWidget {
           ElevatedButton(
             onPressed: () => _onObrisiPressed(context),
             style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(Colors.orange),
-              foregroundColor: MaterialStateProperty.all(Colors.white),
-              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              backgroundColor: WidgetStateProperty.all(Colors.orange),
+              foregroundColor: WidgetStateProperty.all(Colors.white),
+              minimumSize: WidgetStateProperty.all<Size>(Size(100, 50)),
+              shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),
+                  borderRadius: BorderRadius.circular(24.0),
                 ),
               ),
-              padding: MaterialStateProperty.all<EdgeInsets>(
+              padding: WidgetStateProperty.all<EdgeInsets>(
                 EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
               ),
             ),

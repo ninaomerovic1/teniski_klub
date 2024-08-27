@@ -1,3 +1,4 @@
+// ignore_for_file: prefer_const_constructors, library_private_types_in_public_api
 import 'package:flutter/material.dart';
 import 'package:teniski_klub_projekat/services/rezervacija_service.dart';
 import 'package:teniski_klub_projekat/services/termin_service.dart';
@@ -7,6 +8,7 @@ class PrikazRezervacije extends StatefulWidget {
   final String datum;
   final String vreme;
   final String teren;
+  final String? korisnik;
   final int index;
   final Function(int)? onReservationCancelled;
 
@@ -15,6 +17,7 @@ class PrikazRezervacije extends StatefulWidget {
     required this.datum,
     required this.vreme,
     required this.teren,
+    this.korisnik,
     required this.index,
     this.onReservationCancelled,
   });
@@ -57,10 +60,10 @@ class _PrikazRezervacijeState extends State<PrikazRezervacije> {
             TextButton(
               onPressed: () => Navigator.of(context).pop(false),
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(
-                    Color(0xFF04B431)), // Zeleno dugme
-                foregroundColor: MaterialStateProperty.all(Colors.white),
-                shape: MaterialStateProperty.all(
+                backgroundColor: WidgetStateProperty.all(
+                    Color.fromARGB(255, 4, 113, 7)), // Zeleno dugme
+                foregroundColor: WidgetStateProperty.all(Colors.white),
+                shape: WidgetStateProperty.all(
                   RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20.0),
                   ),
@@ -71,10 +74,10 @@ class _PrikazRezervacijeState extends State<PrikazRezervacije> {
             TextButton(
               onPressed: () => Navigator.of(context).pop(true),
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(
-                    Color(0xFFFF914D)), // Narandžasto dugme
-                foregroundColor: MaterialStateProperty.all(Colors.white),
-                shape: MaterialStateProperty.all(
+                backgroundColor: WidgetStateProperty.all(
+                    Colors.orange), // Narandžasto dugme
+                foregroundColor: WidgetStateProperty.all(Colors.white),
+                shape: WidgetStateProperty.all(
                   RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20.0),
                   ),
@@ -146,6 +149,11 @@ class _PrikazRezervacijeState extends State<PrikazRezervacije> {
           ),
           SizedBox(height: 8),
           Text(
+            'Korisnik: ${widget.korisnik}',
+            style: TextStyle(fontSize: 16, color: Colors.black),
+          ),
+          SizedBox(height: 8),
+          Text(
             'Teren: ${widget.teren}',
             style: TextStyle(fontSize: 16, color: Colors.black),
           ),
@@ -156,7 +164,7 @@ class _PrikazRezervacijeState extends State<PrikazRezervacije> {
               ElevatedButton(
                 style: ButtonStyle(
                   backgroundColor: WidgetStateProperty.all(Colors.orange),
-                  foregroundColor: MaterialStateProperty.all(Colors.white),
+                  foregroundColor: WidgetStateProperty.all(Colors.white),
                 ),
                 onPressed: () {
                   showDialog(
@@ -176,8 +184,8 @@ class _PrikazRezervacijeState extends State<PrikazRezervacije> {
               SizedBox(width: 8),
               ElevatedButton(
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.red),
-                  foregroundColor: MaterialStateProperty.all(Colors.white),
+                  backgroundColor: WidgetStateProperty.all(Colors.red),
+                  foregroundColor: WidgetStateProperty.all(Colors.white),
                 ),
                 onPressed: () => _showCancelDialog(context),
                 child: Text('Otkazi'),

@@ -1,3 +1,4 @@
+// ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, library_private_types_in_public_api
 import 'package:flutter/material.dart';
 import 'package:teniski_klub_projekat/models/Rezervacija.dart';
 import 'package:teniski_klub_projekat/widgets/prikaz_rezervacije.dart';
@@ -102,6 +103,7 @@ class _PregledRezervacijaState extends State<PregledRezervacija> {
                           datum: rezervacija.datum,
                           vreme: rezervacija.satnica,
                           teren: rezervacija.teren,
+                          korisnik: rezervacija.korisnik,
                           index: index,
                           onReservationCancelled: (int index) {
                             _refreshData();

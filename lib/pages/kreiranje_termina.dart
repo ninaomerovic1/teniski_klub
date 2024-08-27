@@ -1,4 +1,4 @@
-// kreiraj_termin.dart
+// ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, library_private_types_in_public_api, use_build_context_synchronously
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // Potrebno za formatiranje datuma
 import 'package:teniski_klub_projekat/models/Teren.dart';
@@ -305,14 +305,14 @@ class _KreirajTerminState extends State<KreirajTermin> {
                   child: ElevatedButton(
                     onPressed: _kreirajTermin,
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(
+                      backgroundColor: WidgetStateProperty.all(
                           Color.fromARGB(255, 4, 113, 7)), // Zeleno
-                      foregroundColor: MaterialStateProperty.all(
+                      foregroundColor: WidgetStateProperty.all(
                           Colors.white), // Boja teksta
-                      minimumSize: MaterialStateProperty.all(
+                      minimumSize: WidgetStateProperty.all(
                           Size(double.infinity, 50)), // Širina i visina dugmeta
                       textStyle:
-                          MaterialStateProperty.all(TextStyle(fontSize: 16)),
+                          WidgetStateProperty.all(TextStyle(fontSize: 16)),
                     ),
                     
                     child: Center(child: Text('Kreiraj termin')),
@@ -339,14 +339,14 @@ class _KreirajTerminState extends State<KreirajTermin> {
                   width: double.infinity,
                   child: ElevatedButton(
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(
+                      backgroundColor: WidgetStateProperty.all(
                           Colors.orange), // Narandžasto
-                      foregroundColor: MaterialStateProperty.all(
+                      foregroundColor: WidgetStateProperty.all(
                           Colors.white), // Boja teksta
-                      minimumSize: MaterialStateProperty.all(
+                      minimumSize: WidgetStateProperty.all(
                           Size(double.infinity, 50)), // Širina i visina dugmeta
                       textStyle:
-                          MaterialStateProperty.all(TextStyle(fontSize: 16)),
+                          WidgetStateProperty.all(TextStyle(fontSize: 16)),
                     ),
                     onPressed: () {
                       _isProcessing ? null :_kreirajSveTermineZaDvaMeseca();

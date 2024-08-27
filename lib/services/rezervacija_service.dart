@@ -1,3 +1,4 @@
+// ignore_for_file: prefer_const_constructors
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -53,7 +54,6 @@ class RezervacijaService {
     final List<Rezervacija> rezervacije = [];
 
     data.forEach((rezId, rezData) {
-      print(rezId);
       rezervacije.add(
         Rezervacija(
           id: rezId,
@@ -158,19 +158,17 @@ class RezervacijaService {
     }
   }
 
-
-  Future<List<Rezervacija>> rezervacijeFiltriranje(String? teren, String? datum) async {
+  Future<List<Rezervacija>> rezervacijeFiltriranje(
+      String? teren, String? datum) async {
     final prefs = await SharedPreferences.getInstance();
     final authToken = prefs.getString('authToken');
-    final email = prefs.getString('email');
     if (authToken == null) {
       throw Exception(
           'Autentifikacija nije uspešna. Molimo prijavite se ponovo.');
     }
 
     final response = await http.get(
-      Uri.parse(
-          '$baseUrl.json?&auth=$authToken'),
+      Uri.parse('$baseUrl.json?&auth=$authToken'),
     );
 
     if (response.statusCode != 200) {
@@ -181,17 +179,18 @@ class RezervacijaService {
     final List<Rezervacija> rezervacije = [];
 
     data.forEach((rezId, rezData) {
-      if(rezData['datum'] == datum && rezData['teren'] == teren) {
-      rezervacije.add(
-        Rezervacija(
-          id: rezId,
-          datum: rezData['datum'],
-          satnica: rezData['satnica'],
-          teren: rezData['teren'],
-          korisnik: rezData['korisnik'], // Dodaj ovo ako je potrebno
-        ),
-      );
-      };
+      if (rezData['datum'] == datum && rezData['teren'] == teren) {
+        rezervacije.add(
+          Rezervacija(
+            id: rezId,
+            datum: rezData['datum'],
+            satnica: rezData['satnica'],
+            teren: rezData['teren'],
+            korisnik: rezData['korisnik'], // Dodaj ovo ako je potrebno
+          ),
+        );
+      }
+      ;
     });
 
     return rezervacije;

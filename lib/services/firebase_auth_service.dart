@@ -1,3 +1,4 @@
+// ignore_for_file: prefer_const_constructors
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:teniski_klub_projekat/models/Korisnik.dart';

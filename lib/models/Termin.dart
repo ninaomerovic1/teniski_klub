@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 class Termin {
   String? id;
   final String datum; // Sada čuvamo datum kao string

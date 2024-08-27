@@ -1,20 +1,21 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_constructors_in_immutables, use_build_context_synchronously, sized_box_for_whitespace
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // Potrebno za formatiranje datuma
 import '../widgets/date_picker.dart'; // Importuj novi fajl za DatePicker
 import '../services/termin_service.dart'; // Importuj TerminiService
 import '../services/rezervacija_service.dart'; // Importuj RezervacijaService
 import '../models/Rezervacija.dart'; // Importuj model rezervacije
-import '../services/firebase_auth_service.dart'; // Importuj AuthService
 import '../models/Teren.dart';
 import '../services/tereni_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-const Color availableColor =
+Color availableColor =
     Color.fromARGB(255, 4, 113, 7); // Zeleno za slobodne termine
-const Color unavailableColor = Color(0xFFFF4D4D); // Crveno za zauzete termine
+Color unavailableColor = Color(0xFFFF4D4D); // Crveno za zauzete termine
 
 class Rezervisi extends StatefulWidget {
-  const Rezervisi({super.key});
+  Rezervisi({super.key});
 
   @override
   State<Rezervisi> createState() => _RezervisiState();
@@ -70,8 +71,6 @@ class _RezervisiState extends State<Rezervisi> {
     if (_selectedDate != null && _selectedCourt != null) {
       try {
         final date = DateFormat('dd.MM.yyyy').format(_selectedDate!);
-        print("datum je" + date);
-        print(_selectedCourt!);
         final result =
             await _terminiService.fetchTermini(date, _selectedCourt!);
 
@@ -90,7 +89,6 @@ class _RezervisiState extends State<Rezervisi> {
         ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Greška pri učitavanju termina: $e')));
       }
-      
     }
   }
 
@@ -229,12 +227,12 @@ class _RezervisiState extends State<Rezervisi> {
                   width: double.infinity,
                   child: ElevatedButton(
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.orange),
-                      foregroundColor: MaterialStateProperty.all(Colors.white),
+                      backgroundColor: WidgetStateProperty.all(Colors.orange),
+                      foregroundColor: WidgetStateProperty.all(Colors.white),
                       minimumSize:
-                          MaterialStateProperty.all(Size(double.infinity, 48)),
+                          WidgetStateProperty.all(Size(double.infinity, 48)),
                       textStyle:
-                          MaterialStateProperty.all(TextStyle(fontSize: 16)),
+                          WidgetStateProperty.all(TextStyle(fontSize: 16)),
                     ),
                     onPressed: _checkAvailability,
                     child: Text('Proveri raspoloživost',
@@ -304,13 +302,13 @@ class _RezervisiState extends State<Rezervisi> {
                   width: double.infinity,
                   child: ElevatedButton(
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(
+                      backgroundColor: WidgetStateProperty.all(
                           Color.fromARGB(255, 4, 113, 7)),
-                      foregroundColor: MaterialStateProperty.all(Colors.white),
+                      foregroundColor: WidgetStateProperty.all(Colors.white),
                       minimumSize:
-                          MaterialStateProperty.all(Size(double.infinity, 48)),
+                          WidgetStateProperty.all(Size(double.infinity, 48)),
                       textStyle:
-                          MaterialStateProperty.all(TextStyle(fontSize: 16)),
+                          WidgetStateProperty.all(TextStyle(fontSize: 16)),
                     ),
                     onPressed: () {
                       _reserveTerm();

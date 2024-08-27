@@ -64,6 +64,11 @@ flutter:
     - assets/tennis-ball-bella.png
     - assets/tennis-ball-zuta.png
     - assets/reketi.png
+    - assets/tenis1.jpg
+    - assets/tenis2.jpg
+    - assets/tenis3.jpg
+    - assets/tenis4.jpg
+    - assets/tenis5.jpg
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg
