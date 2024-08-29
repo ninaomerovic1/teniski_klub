@@ -131,77 +131,76 @@ class _PocetnaState extends State<Pocetna> with SingleTickerProviderStateMixin {
                 width: MediaQuery.of(context).size.width *
                     0.9, // Širina velikog kontejnera
                 padding: EdgeInsets.all(16),
-                child: Column(
-                  children: [
-                    SizedBox(height: 30),
-                    Container(
-                      padding: EdgeInsets.all(16.0),
-                      margin: EdgeInsets.only(bottom: 16.0),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: Colors.orange, width: 2),
-                      ),
-                      child: Column(
-                        children: [
-                          Text(
-                            'Dobrodošli',
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                              color: Color.fromARGB(255, 4, 113, 7),
-                            ),
-                          ),
-                          SizedBox(height: 15.0),
-                          Text(
-                            'Ovo je početna stranica aplikacije za rezervaciju termina. Izaberite jednu od opcija u meniju iznad kako biste nastavili.',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    // Kontejner za prikaz slika sa fiksnom visinom i stilom
-                    Container(
-                      height: 370,
-                      padding: EdgeInsets.all(16.0),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: Colors.orange, width: 2),
-                      ),
-                      child: GridView.builder(
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2, // Broj kolona
-                          crossAxisSpacing: 0, // Razmak između kolona
-                          mainAxisSpacing: 0, // Razmak između redova
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      SizedBox(height: 30),
+                      Container(
+                        padding: EdgeInsets.all(16.0),
+                        margin: EdgeInsets.only(bottom: 16.0),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: Colors.orange, width: 2),
                         ),
-                        itemCount: 5, // Broj slika
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () => _showImageDialog(index),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(
-                                  8), // Zaobljeni uglovi slika
-                              child: Image.asset(
-                                'assets/tenis${index + 1}.jpg',
-                                fit: BoxFit.cover,
+                        child: Column(
+                          children: [
+                            Text(
+                              'Dobrodošli',
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                                color: Color.fromARGB(255, 4, 113, 7),
                               ),
                             ),
-                          );
-                        },
+                            SizedBox(height: 15.0),
+                            Text(
+                              'Ovo je početna stranica aplikacije za rezervaciju termina. Izaberite jednu od opcija u meniju iznad kako biste nastavili.',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                      SizedBox(height: 10),
+                      Container(
+                        height: 370,
+                        padding: EdgeInsets.all(16.0),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: Colors.orange, width: 2),
+                        ),
+                        child: GridView.builder(
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2, // Broj kolona
+                            crossAxisSpacing: 0, // Razmak između kolona
+                            mainAxisSpacing: 0, // Razmak između redova
+                          ),
+                          itemCount: 5, // Broj slika
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              onTap: () => _showImageDialog(index),
+                              child: ClipRRect(
+                                child: Image.asset(
+                                  'assets/tenis${index + 1}.jpg',
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
-          // Krug u donjem levom uglu
           Positioned(
             bottom: 20,
             left: 20,

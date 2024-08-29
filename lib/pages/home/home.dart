@@ -50,7 +50,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     );
 
     // Vrati korisnika na stranicu za prijavu
-    Navigator.pushNamed(context, '/signin');
+    Navigator.pushNamedAndRemoveUntil(context, '/signin', (route) => false);
   }
 
   @override

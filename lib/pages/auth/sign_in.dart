@@ -90,7 +90,7 @@ class _LoginPageState extends State<LoginPage>
       return;
     }
 
-   final credentials = await _authService.signIn(email, password);
+    final credentials = await _authService.signIn(email, password);
     if (credentials != null) {
       final parts = credentials.split('|');
       final idToken = parts[0];
@@ -109,13 +109,13 @@ class _LoginPageState extends State<LoginPage>
         await prefs.setBool('isAdmin', korisnik.isAdmin);
         print("evo me u login pageu i korisnik je");
         print(korisnik);
-        Navigator.pushNamed(context, '/home');  
-    }else {
+        Navigator.pushReplacementNamed(context, '/home');
+      } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Neispravan email ili lozinka')),
         );
       }
-  }else {
+    } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Neispravan email ili lozinka')),
       );
