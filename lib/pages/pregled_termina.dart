@@ -82,7 +82,6 @@ class _PregledTerminaState extends State<PregledTermina> {
   }
 
   Future<void> _refreshData() async {
-    print("USAO SAM U REFERSH");
     await _filterTermini();
     setState(() {});
   }

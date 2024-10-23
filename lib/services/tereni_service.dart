@@ -41,7 +41,7 @@ class TereniService {
       return [];
     } else {
       // U slučaju drugih grešaka, vrati praznu listu
-      print("Error: ${response.statusCode}");
+      print("Greška prilikom učitavanja terena: ${response.statusCode}");
       return [];
     }
   }

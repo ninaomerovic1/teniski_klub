@@ -42,8 +42,7 @@ class MyApp extends StatelessWidget {
       ),
       home: Wrapper(),
       routes: {
-        '/home': (context) => Home(),  // Registrovanje rute za Home
-        // Dodaj ovde druge rute ako ih imaš
+        '/home': (context) => Home(),  
         '/register': (context) => Authenticate(),
         '/signin': (context) => LoginPage(),
       },

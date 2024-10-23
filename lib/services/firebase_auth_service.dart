@@ -37,8 +37,7 @@ class FirebaseAuthService {
       print(userId);
       return '$token|$userId|$email';
     } else {
-      // Obrađuj greške
-      return null;
+      throw Exception('Greška prilikom prijavljivanja.');
     }
   }
 
@@ -54,47 +53,48 @@ class FirebaseAuthService {
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
 
-
       if (data != null) {
         print("vracam korisnicki model ");
         print(KorisnikModel.fromJson(data, userId));
         return KorisnikModel.fromJson(data, userId);
+      } else {
+        throw Exception('Greška prilikom učitavanja korisnika.');
       }
     }
     return null;
   }
 
   Future<String?> registerUser(String email, String password) async {
-  final url = '$_baseUrl:signUp?key=$_apiKey';
-  final response = await http.post(
-    Uri.parse(url),
-    body: json.encode({
-      'email': email,
-      'password': password,
-      'returnSecureToken': true,
-    }),
-  );
+    final url = '$_baseUrl:signUp?key=$_apiKey';
+    final response = await http.post(
+      Uri.parse(url),
+      body: json.encode({
+        'email': email,
+        'password': password,
+        'returnSecureToken': true,
+      }),
+    );
 
-  final responseData = json.decode(response.body);
+    final responseData = json.decode(response.body);
 
-  if (response.statusCode == 200) {
-    final idToken = responseData['idToken'];
-    final userId = responseData['localId'];
-    print("u reg");
-    print(userId);
-    return '$idToken|$userId';
-  } else {
-    final error = responseData['error']['message'];
-    if (error == 'EMAIL_EXISTS') {
-      throw Exception('Email already in use.');
+    if (response.statusCode == 200) {
+      final idToken = responseData['idToken'];
+      final userId = responseData['localId'];
+      print("u reg");
+      print(userId);
+      return '$idToken|$userId';
     } else {
-      throw Exception('Registration failed: $error');
+      final error = responseData['error']['message'];
+      if (error == 'EMAIL_EXISTS') {
+        throw Exception('Email je već u upotrebi.');
+      } else {
+        throw Exception('Neuspešna registracija: $error');
+      }
     }
   }
-}
 
-
-  Future<void> saveUserToDatabase(String userId, String idToken, String email) async {
+  Future<void> saveUserToDatabase(
+      String userId, String idToken, String email) async {
     final response = await http.put(
       Uri.parse('$_userDataUrl/korisnici/$userId.json?auth=$idToken'),
       headers: {'Content-Type': 'application/json'},
@@ -106,14 +106,12 @@ class FirebaseAuthService {
     print("OVO JE ID USERA");
     print(userId);
     if (response.statusCode != 200) {
-      throw Exception('Failed to save user to database');
+      throw Exception('Neuspešno čuvanje korisnika u bazi');
     }
   }
 
   Future<String?> getUserId() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getString('userId'); // 'userId' je ključ pod kojim se čuva ID korisnika
+    return prefs.getString('userId');
   }
-
-
 }

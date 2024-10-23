@@ -186,7 +186,7 @@ class RezervacijaService {
             datum: rezData['datum'],
             satnica: rezData['satnica'],
             teren: rezData['teren'],
-            korisnik: rezData['korisnik'], // Dodaj ovo ako je potrebno
+            korisnik: rezData['korisnik'], 
           ),
         );
       }

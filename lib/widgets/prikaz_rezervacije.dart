@@ -93,10 +93,9 @@ class _PrikazRezervacijeState extends State<PrikazRezervacije> {
     if (confirmed == true) {
       // Ako je korisnik potvrdio, otkaži rezervaciju
       await _cancelReservation();
-      print("PVP MU JE INDEX");
-      print(widget.index);
+
       widget.onReservationCancelled?.call(widget.index);
-      //widget.onCancel();
+
     }
   }
 

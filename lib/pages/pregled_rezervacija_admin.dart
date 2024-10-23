@@ -187,12 +187,10 @@ class _FiltriranjeRezervacijaState extends State<FiltriranjeRezervacija> {
                     SizedBox(height: 20),
                     ElevatedButton(
                       style: ButtonStyle(
-                        backgroundColor:
-                            WidgetStateProperty.all(Colors.orange),
-                        foregroundColor:
-                            WidgetStateProperty.all(Colors.white),
-                        minimumSize: WidgetStateProperty.all(
-                            Size(double.infinity, 48)),
+                        backgroundColor: WidgetStateProperty.all(Colors.orange),
+                        foregroundColor: WidgetStateProperty.all(Colors.white),
+                        minimumSize:
+                            WidgetStateProperty.all(Size(double.infinity, 48)),
                         textStyle:
                             WidgetStateProperty.all(TextStyle(fontSize: 16)),
                       ),
@@ -238,7 +236,6 @@ class _FiltriranjeRezervacijaState extends State<FiltriranjeRezervacija> {
                             index: index,
                             onReservationCancelled: (int cancelledIndex) async {
                               setState(() {
-                                print("OVDE SAM");
                                 _filteredRezervacije = [];
                                 _filterReservations();
                               });
